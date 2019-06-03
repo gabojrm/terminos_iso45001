@@ -1,0 +1,7 @@
+node_modules
+build
+npm-debug.log
+manifest.yml
+.vscode/launch.json
+.env
+.DS_Store

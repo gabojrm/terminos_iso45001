@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ISO-45001</title>
+    <link rel="stylesheet" type="text/css" href="wordfind.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body>
+    <header>
+        <h1>Términos y definiciones ISO-45001</h1>
+    </header>
+    <div id="main" role="main">
+        <div id="puzzle"></div>
+
+        <div role="alert" aria-live="assertive" aria-atomic="true" class="toast" id="element" data-autohide="false">
+            <div class="toast-header">
+                <svg class="bd-placeholder-img rounded mr-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg"
+                    preserveAspectRatio="xMidYMid slice" focusable="false" role="img">
+                    <rect width="100%" height="100%" fill="#007aff"></rect>
+                </svg>
+                <strong class="mr-auto">Definición</strong>
+                <!-- <small>11 mins ago</small> -->
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="toast-body">
+                <h6 id="message"></h6>
+            </div>
+        </div>
+
+        <ul id="words">
+            <li><button id="add-word" hidden>Add word</button></li>
+        </ul>
+        <fieldset id="controls">
+            <label for="allowed-missing-words" hidden>Allowed missing words :
+                <input id="allowed-missing-words" type="number" min="0" max="5" step="1" value="2" hidden>
+            </label>
+            <label for="max-grid-growth" hidden>Max grid growth :
+                <input id="max-grid-growth" type="number" min="0" max="5" step="1" value="0" hidden>
+            </label>
+            <label for="extra-letters" hidden>Extra letters :
+                <select id="extra-letters" hidden>
+                    <option value="secret-word" selected>form a secret word</option>
+                    <option value="none">none, allow blanks</option>
+                    <option value="secret-word-plus-blanks">form a secret word but allow for extra blanks</option>
+                    <option value="random">random</option>
+                </select>
+            </label>
+            <label for="secret-word" hidden>Secret word :
+                <input id="secret-word" hidden>
+            </label>
+            <button id="create-grid" hidden>Create grid</button>
+            <p id="result-message" hidden></p>
+            <button id="solve">Solve Puzzle</button>
+        </fieldset>
+    </div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script type="text/javascript" src="wordfind.js"></script>
+    <script type="text/javascript" src="wordfindgame.js"></script>
+    <script>
+        /* Example words setup */
+        [
+            'altadireccion',
+            'eficacia',
+            'politica',
+            'politicaseguridad',
+            'objetivo',
+            'objetivosst',
+            'lesionsalud',
+            'deteriorosalud',
+            'peligro',
+            'riesgo',
+            'organizacion',
+            'parteinteresada',
+            'trabajador',
+            'participacion',
+            'consulta',
+            'lugartrabajo',
+            'contratista',
+            'requisito',
+            'requisitoslegales',
+            'sistemagestion',
+            'sgsst',
+            'riesgosst',
+            'oportunidadsst',
+            'competencia',
+            'informaciondocumentada',
+            'proceso',
+            'procedimiento',
+            'desempeño',
+            'desempeñosst',
+            'contratarexternamente',
+            'seguimiento',
+            'medicion',
+            'auditoria',
+            'conformidad',
+            'noconformidad',
+            'incidente',
+            'accioncorrectiva',
+            'mejoracontinua'
+        ].map(word => WordFindGame.insertWordBefore($('#add-word').parent(), word));
+        $('#secret-word').val('LINA');
+
+        /* Init */
+        function recreate() {
+            $('#result-message').removeClass();
+            var fillBlanks, game;
+            if ($('#extra-letters').val() === 'none') {
+                fillBlanks = false;
+            } else if ($('#extra-letters').val().startsWith('random')) {
+                fillBlanks = $('#secret-word').val();
+            }
+            try {
+                game = new WordFindGame('#puzzle', {
+                    allowedMissingWords: +$('#allowed-missing-words').val(),
+                    maxGridGrowth: 100,//+$('#max-grid-growth').val(),
+                    fillBlanks: fillBlanks,
+                    allowExtraBlanks: ['none', 'secret-word-plus-blanks'].includes($('#extra-letters').val()),
+                    maxAttempts: 200,
+                });
+            } catch (error) {
+                $('#result-message').text(`😞 ${error}, try to specify less ones`).css({ color: 'red' });
+                return;
+            }
+            wordfind.print(game);
+            if (window.game) {
+                var emptySquaresCount = WordFindGame.emptySquaresCount();
+                $('#result-message').text(`😃 ${emptySquaresCount ? 'but there are empty squares' : ''}`).css({ color: '' });
+            }
+            window.game = game;
+        }
+        recreate();
+
+        /* Event listeners */
+        $('#extra-letters').change((evt) => $('#secret-word').prop('disabled', !evt.target.value.startsWith('secret-word')));
+
+        $('#add-word').click(() => WordFindGame.insertWordBefore($('#add-word').parent()));
+
+        $('#create-grid').click(recreate);
+
+        $('#solve').click(() => game.solve());
+    </script>
+    <script type="text/javascript" src="index.js"></script>
+</body>
+
+</html>
