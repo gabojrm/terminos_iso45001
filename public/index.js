@@ -5,7 +5,6 @@ var words = [
     { 'id': 'politicaseguridad', 'descrip': '<b>POLÍTICA DE LA SEGURIDAD Y SALUD EN EL TRABAJO</b>: Para prevenir lesiones y deterioro de la salud relacionados con el trabajo a los trabajadores, y para proporcionar lugares de trabajo seguros y saludables' },
     { 'id': 'objetivo', 'descrip': '<b>OBJETIVO</b>: Resultado a alcanzar' },
     { 'id': 'objetivosst', 'descrip': '<b>OBJETIVO DE LA SEGURIDAD Y SALUD EN EL TRABAJO</b>: Objetivo establecido por la organización para lograr resultados específicos coherentes con la política de la SST.' },
-    { 'id': 'lesionsalud', 'descrip': '<b>LESIÓN Y DETERIORO DE LA SALUD</b> Efecto adverso en la condición física, mental o cognitiva de una persona' },
     { 'id': 'deteriorosalud', 'descrip': '<b>LESIÓN Y DETERIORO DE LA SALUD</b> Efecto adverso en la condición física, mental o cognitiva de una persona' },
     { 'id': 'peligro', 'descrip': '<b>PELIGRO</b>: Fuente con un potencial para causar lesiones y deterioro de la salud.' },
     { 'id': 'riesgo', 'descrip': '<b>RIESGO</b>: Efecto de la incertidumbre' },
